@@ -1,0 +1,56 @@
+{% load static %}
+
+{% include 'base/blocks/header.html' %}
+
+{% include 'base/blocks/menu.html' %}
+
+{% include 'base/blocks/navbar.html' %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        {% for rec in record %}
+        <h4 class="fw-bold py-3 mb-4"> Редактирование записи  </h4>
+        {% endfor %}
+
+        <form id="formAccountSettings" method="POST" enctype="multipart/form-data">
+            <div class="card mb-4">
+                    <hr class="my-0"/>
+                    <div class="card-body">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="mb-3 col-md-6">
+                                    <label for="procedure_name" class="form-label">Процедура</label>
+                                    {{ record_form.procedure_name }}
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="cabinet" class="form-label">Кабинет</label>
+                                    {{ record_form.cabinet }}
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="price" class="form-label">Цена</label>
+                                    {{ record_form.price }}
+                                </div>
+
+                                <div class="mb-3 col-md-6">
+                                    <label for="datetime" class="form-label">Время</label>
+                                    {{ record_form.datetime }}
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button name="save_record_info" class="btn btn-primary me-2">Добавить
+                                </button>
+                                <button type="reset" class="btn btn-outline-secondary">Очистить</button>
+                            </div>
+                    </div>
+            </div>
+        </form>
+
+
+
+    </div>
+    <!-- / Content -->
+
+    {% include 'base/blocks/footer.html' %}

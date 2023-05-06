@@ -1,0 +1,74 @@
+{% load static %}
+
+{% include 'base/blocks/header.html' %}
+
+{% include 'base/blocks/menu.html' %}
+
+{% include 'base/blocks/navbar.html' %}
+
+    <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <dl class="row mt-2">
+                  <dt class="col-sm-4"><h4 class="fw-bold "> Список клиентов </h4></dt>
+                  <dt class="col-sm-5">
+                      <form class="mb-3" method="POST">
+                      <div class="input-group">
+                        {% csrf_token %}
+                        <input type="text" name="search_text" class="form-control" aria-describedby="button-addon2" value="{{ search_text }}">
+                        <button name="search" class="btn btn-outline-primary" id="button-addon2">Поиск</button>
+                      </div>
+                      </form>
+                  </dt>
+                  <dd class="col-sm-3">
+                     <a href="{% url 'add_client' %}"> <button class="btn btn-primary"> Добавить клиента </button> </a>
+                  </dd>
+              </dl>
+
+              <div class="table-responsive text-nowrap">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>ФИО</th>
+                            <th>Почта</th>
+                            <th>Телефон</th>
+<!--                            <th>Cтатус</th>-->
+                            <th>Действия</th>
+                          </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                          {% for client in clients %}
+                            <tr>
+                              <td><i class="fab fa-angular fa-lg text-danger me-3"></i>  <a href="{% url 'view_client_info' client.id %}"> <strong>{{ client.name }}</strong> </a></td>
+                              <td>{{ client.mail }}</td>
+                              <td>{{ client.phone }}</td>
+<!--                              <td>-->
+<!--                                {% if client.status %}-->
+<!--                                  <span class="badge bg-label-primary me-1">Активный</span>-->
+<!--                                {% else %}-->
+<!--                                  <span class="badge bg-label-warning me-1">Удален</span>-->
+<!--                                {% endif %}-->
+<!--                              </td>-->
+                              <td>
+                                <div class="dropdown">
+
+                                  <div class="inline">
+                                    <form class="mb-3" method="POST">
+                                        <a href="{% url 'edit_client_info' client.id %}" class="btn btn-primary"><i class="bx bx-edit-alt me-1"></i></a>
+                                        {% csrf_token %}
+                                        <button name="deactivate-account" value="{{ client.id }}" class="btn btn-danger"><i class="bx bx-trash me-1"></i></button>
+                                    </form>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+
+
+
+        {% include 'base/blocks/footer.html' %}

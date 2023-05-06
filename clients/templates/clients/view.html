@@ -1,0 +1,131 @@
+{% load static %}
+
+{% include 'base/blocks/header.html' %}
+
+{% include 'base/blocks/menu.html' %}
+
+{% include 'base/blocks/navbar.html' %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        {% for cl in client %}
+        <dl class="row mt-2">
+            <dt class="col-sm-10">
+                <h4 class="fw-bold py-3 mb-4"> Информация о клиенте </h4>
+
+            </dt>
+            <dd class="col-sm-2">
+               <a href="{% url 'edit_client_info' cl.id %}"><button class="btn btn-primary">  Редактировать </button></a>
+            </dd>
+        </dl>
+
+        {% endfor %}
+        <div class="card-body">
+                      <small class="text-light fw-semibold"></small>
+            {% for cl in client %}
+                      <dl class="row mt-2">
+                        <dt class="col-sm-3">ФИО</dt>
+                        <dd class="col-sm-9">{{ cl.name }}</dd>
+
+                        <dt class="col-sm-3">Почта</dt>
+                        <dd class="col-sm-9">
+                          <p>{{ cl.mail }}</p>
+                        </dd>
+
+                        <dt class="col-sm-3">Телефон</dt>
+                        <dd class="col-sm-9">{{ cl.phone }}</dd>
+
+                        <dt class="col-sm-3 text-truncate">Пол</dt>
+                        <dd class="col-sm-9"> {{ cl.sex }} </dd>
+
+                        <dt class="col-sm-3">Полис ОМС</dt>
+                        <dd class="col-sm-9">
+                            {{ cl.polis }}
+                        </dd>
+
+                        <dt class="col-sm-3">Возраст</dt>
+                        <dd class="col-sm-9">
+                            {{ cl.age }}
+                        </dd>
+
+                        <dt class="col-sm-3">Серия и номер паспорта </dt>
+                        <dd class="col-sm-9">
+                            {{ cl.passport_number }}
+                        </dd>
+                      </dl>
+            {% endfor %}
+                    </div>
+
+
+        <dl class="row mt-2">
+            <dt class="col-sm-10"><h4 class="fw-bold "> Записи клиента </h4></dt>
+            <dd class="col-sm-2">
+                {% for cl in client %}
+               <a href="{% url 'add_record' cl.id %}"> <button class="btn btn-primary"> Добавить запись </button> </a>
+                {% endfor %}
+            </dd>
+        </dl>
+
+        <div class="table-responsive text-nowrap">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Процедура</th>
+                            <th>Кабинет</th>
+                            <th>Цена</th>
+                            <th>Время</th>
+                            <th>Оплачено</th>
+                            <th>Отменено</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                          {% for record in records %}
+                            <tr>
+                              <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ record.procedure_name }}</strong></td>
+                              <td>{{ record.cabinet }}</td>
+                              <td>{{ record.price }}</td>
+                              <td>{{ record.datetime }}</td>
+                              <td>
+                                <form class="mb-3" method="POST">
+                                {% if record.is_payed %}
+                                  <span class="badge bg-label-primary me-1">Да</span>
+                                {% else %}
+                                  <span class="badge bg-label-warning me-1">Нет</span>
+                                {% endif %}
+
+                                  {% csrf_token %}
+                                  <button name="undo-pay" value="{{ record.id }}" class="btn btn-icon btn-secondary"><i class="bx bx-undo me-1"></i></button>
+                                </form>
+                              </td>
+                              <td>
+                                <form class="mb-3" method="POST">
+                                {% if record.is_cancelled %}
+                                  <span class="badge bg-label-primary me-1">Да</span>
+                                {% else %}
+                                  <span class="badge bg-label-warning me-1">Нет</span>
+                                {% endif %}
+
+                                  {% csrf_token %}
+                                  <button name="undo-cancel" value="{{ record.id }}" class="btn btn-icon btn-secondary"><i class="bx bx-undo"></i></button>
+                                </form>
+                              </td>
+                              <td>
+                                <div class="dropdown">
+                                  <div class="inline">
+                                    <a href="{% url 'edit_record_info' record.id %}"><button class="btn btn-primary"><i class="bx bx-edit-alt me-1"></i></button>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+    </div>
+    <!-- / Content -->
+
+    {% include 'base/blocks/footer.html' %}

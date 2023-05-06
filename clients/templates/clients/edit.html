@@ -1,0 +1,68 @@
+{% load static %}
+
+{% include 'base/blocks/header.html' %}
+
+{% include 'base/blocks/menu.html' %}
+
+{% include 'base/blocks/navbar.html' %}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        {% for cl in client %}
+        <h4 class="fw-bold py-3 mb-4"> Редактирование клиента  </h4>
+        {% endfor %}
+
+        <form id="formAccountSettings" method="POST" enctype="multipart/form-data">
+            <div class="card mb-4">
+                    <hr class="my-0"/>
+                    <div class="card-body">
+
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="mb-3 col-md-6">
+                                    <label for="name" class="form-label">ФИО</label>
+                                    {{ client_form.name }}
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="mail" class="form-label">Почта</label>
+                                    {{ client_form.mail }}
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="phone" class="form-label">Телефон</label>
+                                    {{ client_form.phone }}
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="sex" class="form-label">Пол</label>
+                                    {{ client_form.sex }}
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="passport_number" class="form-label">Серия и номер паспорта</label>
+                                    {{ client_form.passport_number }}
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="polis" class="form-label">Полис</label>
+                                    {{ client_form.polis }}
+                                </div>
+                                 <div class="mb-3 col-md-6">
+                                    <label for="age" class="form-label">Возраст</label>
+                                    {{ client_form.age }}
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button name="save_client_info" class="btn btn-primary me-2">Сохранить изменения
+                                </button>
+                                <button type="reset" class="btn btn-outline-secondary">Очистить</button>
+                            </div>
+                    </div>
+            </div>
+        </form>
+
+
+
+    </div>
+    <!-- / Content -->
+
+    {% include 'base/blocks/footer.html' %}
